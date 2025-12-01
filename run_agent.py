@@ -1,4 +1,3 @@
-
 import uuid
 import asyncio
 import warnings
@@ -12,14 +11,15 @@ from github_agent.agent import root_agent
 
 load_dotenv()
 
-# Suppress the experimental warnings
+# Suppress warnings
 warnings.filterwarnings('ignore', category=UserWarning, module='google.adk.tools.mcp_tool.mcp_tool')
+warnings.filterwarnings('ignore', message='.*async_generator.*')
 
 
 async def main():
     # Configuration
-    APP_NAME = "Brandon Bot"
-    USER_ID = "brandon_hancock"
+    APP_NAME = "agents"
+    USER_ID = "test_user"
     SESSION_ID = str(uuid.uuid4())
     
     print("CREATED NEW SESSION:")
@@ -77,23 +77,26 @@ async def main():
                     
             if event.is_final_response():
                 print("\n\n[Response Complete]")
-        await github_tools.close()
+                
     except KeyboardInterrupt:
         print("\n\n[Interrupted by user]")
     except Exception as e:
         print(f"\n\nError during agent execution: {e}")
         import traceback
         traceback.print_exc()
+    finally:
+        # Properly close the MCP connection
+        try:
+            await github_tools.close()
+        except Exception as e:
+            print(f"Warning: Error closing github_tools: {e}")
 
 
 if __name__ == "__main__":
-    # Suppress the async generator cleanup warning
-    import warnings
-    warnings.filterwarnings('ignore', message='.*async_generator.*')
-    
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
         print("\nExiting...")
-    # except Exception as e:
-    #     pass  # Ignore cleanup errors
+    except Exception as e:
+        print(f"\nFatal error: {e}")
+        sys.exit(1)
