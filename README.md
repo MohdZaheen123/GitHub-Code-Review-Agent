@@ -212,9 +212,3 @@ Review Complete
 This multi-agent system demonstrates the power of orchestrated AI for code review automation. By combining specialized agents with parallel processing and intelligent synthesis, it delivers comprehensive, actionable code reviews that maintain quality while accelerating development velocity.
 
 The architecture is extensible, allowing teams to add custom review agents for domain-specific requirements, making it adaptable to any development workflow.
-
----
-
-**Repository**: [Your GitHub Link]
-**Documentation**: [API Docs Link]
-**License**: MIT
